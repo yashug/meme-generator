@@ -1,54 +1,38 @@
 'use client'
 import Image from "next/image";
 import { useElementSize } from "usehooks-ts";
+import { MemeTemplate } from "../(data)/types";
 
-type MemeDisplayProps = {
-  background: {
-    src: string;
-    width: number;
-    height: number;
-    alt: string;
-  };
-  textAreas: {
-    id: string;
-    text: string;
-    top: number;
-    left: number;
-    width: number;
-    height: number;
-    fontSize: number;
-    color: string;
-  }[];
-};
+const MemeDisplay = ({ template, values }: {template: MemeTemplate, values: Record<string, string>}) => {
+  const [memeRef, { width: memeWidth }] = useElementSize();
+  const ratio = memeWidth / template.background.width;
 
-const MemeDisplay = ({ background, textAreas }: MemeDisplayProps) => {
-  const [memeRef, { width }] = useElementSize();
-  const ratio = width / background.width;
+  const {src, alt, width, height} = template.background
 
   return (
     <div className="relative" ref={memeRef}>
       <Image
-        src={background.src}
-        alt={background.alt}
-        width={background.width}
-        height={background.height}
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
       />
-      {textAreas.map((textArea) => (
+      {template.textareas.map((textarea) => (
         <div
           className="absolute"
-          key={textArea.id}
+          key={textarea.id}
           style={{
-            top: textArea.top * ratio,
-            left: textArea.left * ratio,
-            width: textArea.width * ratio,
-            height: textArea.height * ratio,
+            top: textarea.top * ratio,
+            left: textarea.left * ratio,
+            width: textarea.width * ratio,
+            height: textarea.height * ratio,
           }}
         >
           <div
-            className={`text-center text-${textArea.color} text-stroke-white`}
-            style={{ fontSize: textArea.fontSize * ratio, lineHeight: "1.1" }}
+            className={`text-center text-${textarea.color} text-stroke-white`}
+            style={{ fontSize: textarea.size * ratio, lineHeight: "1.1" }}
           >
-            {textArea.text}
+            {values[textarea.id] ?? textarea.text}
           </div>
         </div>
       ))}
