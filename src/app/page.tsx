@@ -17,9 +17,11 @@ export default async function Home() {
         {memes.map((meme) => (
           <MemeDisplay
             key={meme.id}
-            template = {memeTemplates.find(
-              (memeTemplate) => memeTemplate.id === meme.template
-            )!}
+            template={
+              memeTemplates.find(
+                (memeTemplate) => memeTemplate.id === meme.template
+              )!
+            }
             values={meme.values}
           />
         ))}
