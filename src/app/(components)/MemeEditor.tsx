@@ -28,8 +28,24 @@ const MemeEditor = ({ templates }: { templates: MemeTemplate[] }) => {
 
   const values = watch("values");
 
+  const onSubmit = async (data: {
+    template: string;
+    values: Record<string, string>;
+  }) => {
+    await fetch("http://localhost:3000/api/memes", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        template: data.template,
+        values: data.values,
+      }),
+    });
+  };
+
   return (
-    <form>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="grid sm:grid-cols-1 md:grid-cols-[60%_40%]">
         <MemeDisplay template={template} values={values} />
         <div className="px-2">
@@ -64,6 +80,11 @@ const MemeEditor = ({ templates }: { templates: MemeTemplate[] }) => {
               </div>
             </div>
           ))}
+          <div className="flex justify-end">
+            <button className="btn btn-accent mt-5 min-w-[200px]" type="submit">
+              Let&apos;s Go!
+            </button>
+          </div>
         </div>
       </div>
     </form>
