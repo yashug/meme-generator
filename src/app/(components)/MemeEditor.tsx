@@ -2,6 +2,8 @@
 import { MemeTemplate } from "../(data)/types";
 import { useForm } from "react-hook-form";
 import MemeDisplay from "./MemeDisplay";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 
 const textValues = (template: MemeTemplate) =>
   template.textareas.reduce(
@@ -27,6 +29,8 @@ const MemeEditor = ({ templates }: { templates: MemeTemplate[] }) => {
   const template = templates.find((template) => template.id === templateId)!;
 
   const values = watch("values");
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
 
   const onSubmit = async (data: {
     template: string;
@@ -41,6 +45,10 @@ const MemeEditor = ({ templates }: { templates: MemeTemplate[] }) => {
         template: data.template,
         values: data.values,
       }),
+    });
+
+    startTransition(() => {
+      router.refresh();
     });
   };
 
@@ -81,7 +89,7 @@ const MemeEditor = ({ templates }: { templates: MemeTemplate[] }) => {
             </div>
           ))}
           <div className="flex justify-end">
-            <button className="btn btn-accent mt-5 min-w-[200px]" type="submit">
+            <button className="btn btn-accent mt-5 min-w-[200px]" type="submit" disabled={isPending}>
               Let&apos;s Go!
             </button>
           </div>
