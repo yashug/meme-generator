@@ -1,32 +1,29 @@
-import Image from "next/image";
+import MemeDisplay from "./(components)/MemeDisplay";
 
 export default function Home() {
   return (
     <main className="max-w-[1200px] mx-auto">
-      <div className="relative">
-        <Image
-          src="/disaster-girl.jpg"
-          alt="Disaster Girl"
-          width={1200}
-          height={900}
-        />
-        <div
-          className="absolute"
-          style={{
-            top: 760,
-            left: 100,
-            width: 1000,
-            height: 100,
-            border: "2px solid red",
+      <div className="max-w-[600px]">
+        <MemeDisplay
+          background={{
+            src: "/disaster-girl.jpg",
+            alt: "Disaster Girl",
+            width: 1200,
+            height: 900,
           }}
-        >
-          <div
-            className="text-center text-white text-stroke-white"
-            style={{ fontSize: 100, lineHeight: "1.1" }}
-          >
-            Really ?
-          </div>
-        </div>
+          textAreas={[
+            {
+              top: 750,
+              left: 100,
+              width: 1000,
+              height: 100,
+              color: "white",
+              fontSize: 100,
+              text: "I'm gonna be rich",
+              id: "saying",
+            },
+          ]}
+        />
       </div>
     </main>
   );
