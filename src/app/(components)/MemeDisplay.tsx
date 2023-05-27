@@ -1,22 +1,26 @@
-'use client'
+"use client";
 import Image from "next/image";
 import { useElementSize } from "usehooks-ts";
 import { MemeTemplate } from "../(data)/types";
+import { Anton } from "next/font/google";
 
-const MemeDisplay = ({ template, values }: {template: MemeTemplate, values: Record<string, string>}) => {
+const anton = Anton({ subsets: ["latin"], weight: "400" });
+
+const MemeDisplay = ({
+  template,
+  values,
+}: {
+  template: MemeTemplate;
+  values: Record<string, string>;
+}) => {
   const [memeRef, { width: memeWidth }] = useElementSize();
   const ratio = memeWidth / template.background.width;
 
-  const {src, alt, width, height} = template.background
+  const { src, alt, width, height } = template.background;
 
   return (
     <div className="relative" ref={memeRef}>
-      <Image
-        src={src}
-        alt={alt}
-        width={width}
-        height={height}
-      />
+      <Image src={src} alt={alt} width={width} height={height} />
       {template.textareas.map((textarea) => (
         <div
           className="absolute"
@@ -29,7 +33,7 @@ const MemeDisplay = ({ template, values }: {template: MemeTemplate, values: Reco
           }}
         >
           <div
-            className={`text-center text-${textarea.color} text-stroke-white`}
+            className={`${anton.className} text-center text-${textarea.color} text-stroke-white`}
             style={{ fontSize: textarea.size * ratio, lineHeight: "1.1" }}
           >
             {values[textarea.id] ?? textarea.text}
